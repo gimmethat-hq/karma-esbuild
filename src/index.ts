@@ -174,13 +174,13 @@ function createPreprocessor(
 		let filePath = path.normalize(jsPath);
 
 		if (singleBundle) {
-			testEntryPoint.addFile(filePath);
+			testEntryPoint.addFile(file.originalPath);
 			filePath = testEntryPoint.file;
 		} else {
-			bundlerMap.addPotential(filePath);
+			bundlerMap.addPotential(file.originalPath);
 		}
 
-		const bundle = bundlerMap.get(filePath);
+		const bundle = bundlerMap.get(file.originalPath);
 		bundle.dirty();
 
 		if (singleBundle) {
@@ -191,7 +191,7 @@ function createPreprocessor(
 			file.type = "dom";
 			done(null, "");
 		} else {
-			const res = await bundlerMap.read(filePath);
+			const res = await bundlerMap.read(file.originalPath);
 			file.path = jsPath;
 			done(null, res.code);
 		}
